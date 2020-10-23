@@ -1,0 +1,7 @@
+exportfields=user_id,first_name,email
+exportdir=exports
+outputpath=done
+outputname=braze_export
+combineonly=true
+delimiter=comma
+outputdelimiter=comma
