@@ -34,8 +34,6 @@ def mergeExports():
     if ('outputpath' in os.environ) and  (os.environ['outputpath'].strip()):
         fileprefix += os.environ['outputpath'].strip().rstrip('/').lstrip('/') + '/'
 
-
-
     extract = True
     extension = 'csv'
 
@@ -142,6 +140,7 @@ def mergeExports():
                                     row.append(None)
                                     # print(records[fields], end=',')
                             csvwriter.writerow(row)
+    outfile.close()
     print("Results saved in {}".format(outfile.name))
 
 if __name__ == '__main__':

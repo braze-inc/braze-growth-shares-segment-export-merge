@@ -1,5 +1,5 @@
 # Braze User Export Segment Merge
-This is a python 3 script which simplifies the process of combining multiple Braze Segment CSV export into a single file. The following file format is supported: `.gz`, `.zip`,`.txt`,`.tab`,`.csv`. When using a `tab` or `csv` delimited files, make sure the `delimiter` setting is set correctly.
+This is a python 3 script which simplifies the process of combining multiple Braze Segment CSV export (or a segment api export in `json` format) into a single file. The following file format is supported: `.gz`, `.zip`,`.txt`,`.tab`,`.csv`. When using a `tab` or `csv` delimited files, make sure the `delimiter` setting is set correctly.
 
 ## Requirements
 The following are required:
@@ -9,7 +9,7 @@ The following are required:
 ## Process Steps
 The following is an outline of the process:
 * Edit the `.env` with any custom `exportfields` for output ie `external_id,email`. If using `combineonly`, then the files will only be combined. **Warning, please make sure all files are in the correct format, and that the header lines up. NO file transformation is done**
-* Edit the `.env` with any `delimiter` and  `outputdelimiter` changes. ie `comma` or `tab`
+* Edit the `.env` with any `fileformat` and  `outputdelimiter` changes. ie `comma` or `tab`. For api export, use `json` as the `fileformat`.
 * Run the script using `python3 merge_exports.py` to read the export files, extract the specific fields, and combine the files into one file.
 * Results are saves it to the `outpath`
 
