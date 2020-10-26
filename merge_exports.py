@@ -44,9 +44,14 @@ def mergeExports():
     combineonly = False
     if ('combineonly' in os.environ) and (os.environ['combineonly'].strip().lower() in ['true', '1', 't', 'y', 'yes']):
         combineonly = True
+    fileformat = 'comma'
     delimiter = ','
-    if ('delimiter' in os.environ) and (os.environ['delimiter'].strip().lower() in ['tab']):
-        delimiter = '\t'
+    if ('fileformat' in os.environ):
+        if (os.environ['fileformat'].strip().lower() in ['tab']):
+            fileformat = 'tab'
+            delimiter = '\t'
+        elif (os.environ['fileformat'].strip().lower() in ['json']):
+            fileformat = 'json'
     outdelimiter = ','
     if ('outputdelimiter' in os.environ) and (os.environ['outputdelimiter'].strip().lower() in ['tab']):
         outdelimiter = '\t'
@@ -73,16 +78,34 @@ def mergeExports():
                             for rows in csvdata:
                                 outfile.write(rows)
                         else:
-                            csvdata = csv.DictReader(TextIOWrapper(csvfile, 'utf-8'), delimiter=delimiter)
-                            for records in csvdata:
-                                row = []
-                                for fields in brazefields:
-                                    if fields in records:
-                                        row.append(records[fields])
-                                    else:
-                                        row.append(None)
-                                        # print(records[fields], end=',')
-                                csvwriter.writerow(row)
+                            if (fileformat == 'json'):
+                                csvdata = TextIOWrapper(csvfile, 'utf-8')
+                                for records in csvdata:
+                                    record_json = json.loads(records)
+                                    row = []
+                                    for fields in brazefields:
+                                        if fields in record_json:
+                                            row.append(record_json[fields])
+                                        else:
+                                            if 'custom_attributes' in record_json:
+                                                if fields in record_json['custom_attributes']:
+                                                    row.append(record_json['custom_attributes'][sfv])
+                                                else:
+                                                    row.append(None)
+                                            else:
+                                                row.append(None)
+                                    csvwriter.writerow(row)
+                            else:
+                                csvdata = csv.DictReader(TextIOWrapper(csvfile, 'utf-8'), delimiter=delimiter)
+                                for records in csvdata:
+                                    row = []
+                                    for fields in brazefields:
+                                        if fields in records:
+                                            row.append(records[fields])
+                                        else:
+                                            row.append(None)
+                                            # print(records[fields], end=',')
+                                    csvwriter.writerow(row)
             elif exportfile.name.endswith(('.txt','.csv','.tab')):
                 print("Processing file {}".format(exportfile.name))
                 csvfile = open(exportfile, 'r')
@@ -92,16 +115,33 @@ def mergeExports():
                     for rows in csvfile:
                         outfile.write(rows)
                 else:
-                    csvdata = csv.DictReader(csvfile, delimiter=delimiter)
-                    for records in csvdata:
-                        row = []
-                        for fields in brazefields:
-                            if fields in records:
-                                row.append(records[fields])
-                            else:
-                                row.append(None)
-                                # print(records[fields], end=',')
-                        csvwriter.writerow(row)
+                    if fileformat == 'json':
+                        for records in csvfile:
+                            record_json = json.loads(records)
+                            row = []
+                            for fields in brazefields:
+                                if fields in record_json:
+                                    row.append(record_json[fields])
+                                else:
+                                    if 'custom_attributes' in record_json:
+                                        if fields in record_json['custom_attributes']:
+                                            row.append(record_json['custom_attributes'][sfv])
+                                        else:
+                                            row.append(None)
+                                    else:
+                                        row.append(None)
+                            csvwriter.writerow(row)
+                    else:
+                        csvdata = csv.DictReader(csvfile, delimiter=delimiter)
+                        for records in csvdata:
+                            row = []
+                            for fields in brazefields:
+                                if fields in records:
+                                    row.append(records[fields])
+                                else:
+                                    row.append(None)
+                                    # print(records[fields], end=',')
+                            csvwriter.writerow(row)
     print("Results saved in {}".format(outfile.name))
 
 if __name__ == '__main__':

@@ -22,15 +22,15 @@ The easiest way to setup the configuration is to create a `.env` file in the sam
 ### Configuration Settings
 |Setting|Description|Example value|
 |----|----|----|
-|exportfields|Fields to be read from the csv files|external_id,attr_1,attr_2|
+|exportfields|Fields to be read from the csv files. **Ensure all capitalization matches the exports**|external_id,attr_1,attr_2|
 |combineonly|Boolean - false, enable to only combine the files, and csv columns will not be parsed. **WARNING: Ensure all columns are align in all files** |false|
 |outputpath|Folder to place the results in. Make sure the folder exist.|done|
 |outputname|Output File prefix name|braze_export|
-|delimiter|File format to read the files, set to `comma` or `tab`| comma|
+|fileformat|File format to read the files, set to `comma`,`tab` or `json`| comma|
 |outputdelimiter|File format to write the files, set to `comma` or `tab`| comma|
 
 # Running the Script
-To run the script use `python3 merge_exports.py`. This will read each export zip file from the `exportdir`, process the files based on the delimiter type, and place the resulting file into the `outputpath` folder.
+To run the script use `python3 merge_exports.py`. This will read each export zip file from the `exportdir`, process the files based on the `fileformat`, and place the resulting file into the `outputpath` folder. For file format of `json`, the process will parse the file as `json` prior to converting it to the output format.
 
 ## Install dependency
 Use `pip3 install -r requirements.txt` to installed the dependencies. See [Using Virtual environment](#using-virtual-environment) below to avoid dependency issues.
