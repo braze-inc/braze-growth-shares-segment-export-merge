@@ -70,8 +70,6 @@ def mergeExports():
                         csvfile = zip.open(csvs, 'r')
 
                         if combineonly:
-                            # for rows in csvfile:
-                            # csvfile = zip.read(csvs, 'r')
                             csvdata = TextIOWrapper(csvfile, 'utf-8')
                             for rows in csvdata:
                                 outfile.write(rows)
@@ -102,14 +100,12 @@ def mergeExports():
                                             row.append(records[fields])
                                         else:
                                             row.append(None)
-                                            # print(records[fields], end=',')
                                     csvwriter.writerow(row)
             elif exportfile.name.endswith(('.txt','.csv','.tab')):
                 print("Processing file {}".format(exportfile.name))
                 csvfile = open(exportfile, 'r')
 
                 if combineonly:
-                    # csvfile = read(exportfile, 'r')
                     for rows in csvfile:
                         outfile.write(rows)
                 else:
@@ -138,7 +134,6 @@ def mergeExports():
                                     row.append(records[fields])
                                 else:
                                     row.append(None)
-                                    # print(records[fields], end=',')
                             csvwriter.writerow(row)
     outfile.close()
     print("Results saved in {}".format(outfile.name))

@@ -14,7 +14,7 @@ bz_logs/*
 *creds.json
 bz_bigquery.json
 bz_config*
-.gcs
+.bzp
 app.yaml
 .env
 *.zip
